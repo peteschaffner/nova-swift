@@ -84,13 +84,22 @@
 				<expression>///?(.*)$</expression>
 				<capture number="1" name="swift.comment.content" />
 			</scope>
+			<scope name="swift.comment.single.shebang">
+				<expression>^\#!(.*)$</expression>
+				<capture number="1" name="swift.comment.content" />
+			</scope>
 			<scope name="swift.comment.block" spell-check="true">
 				<starts-with>
-					<expression>/\*\*?</expression>
+					<expression>/\*\*(?!/)</expression>
+					<expression>/\*:</expression>
+					<expression>/\*</expression>
 				</starts-with>
 				<ends-with>
 					<expression>\*/</expression>
 				</ends-with>
+				<subscopes>
+					<include syntax="self" collection="comments" />
+				</subscopes>
 			</scope>
 		</collection>
 
@@ -101,7 +110,8 @@
 					<capture number="1" name="swift.keyword" />
 				</starts-with>
 				<ends-with>
-					<expression>$</expression>
+					<expression>(;)|$|(?=//|/\*)</expression>
+					<capture number="1" name="swift.punctuation.terminator.statement" />
 				</ends-with>
 			</scope>
 		</collection>
